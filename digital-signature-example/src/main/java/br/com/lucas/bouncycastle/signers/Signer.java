@@ -1,5 +1,7 @@
 package br.com.lucas.bouncycastle.signers;
 
-public interface Signer {
+import java.io.File;
 
+public interface Signer {
+	File sign(File originalFile);
 }
