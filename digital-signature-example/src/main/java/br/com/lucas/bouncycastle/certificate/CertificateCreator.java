@@ -26,9 +26,10 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
 import br.com.lucas.bouncycastle.certificate.model.CertificateData;
+
 /**
  * 
- * @author Lucas
+ * @author Lucas de Oliveira Gomes
  *
  */
 public abstract class CertificateCreator {
@@ -44,23 +45,26 @@ public abstract class CertificateCreator {
 		}
 	}
 
-	abstract CertificateData build(String commonName, Date notAfter, Date notBefore, CertificateData parent)
-			throws Exception;
+	public abstract CertificateData build(String commonName, Date notAfter, Date notBefore, boolean isCACertificate,
+			CertificateData parent) throws Exception;
 
 }
 
 final class SimpleCertificateCreator extends CertificateCreator {
 
 	@Override
-	CertificateData build(String commonName, Date notAfter, Date notBefore, CertificateData parentCertificate)
-			throws Exception {
-		boolean isSelfSigned = parentCertificate != null;
+	public CertificateData build(String commonName, Date notAfter, Date notBefore, boolean isCACertificate,
+			CertificateData parentCertificate) throws Exception {
+		boolean isSelfSigned = parentCertificate == null;
+		int keySize = isCACertificate ? 4096 : 2048;
 
 		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA", BouncyCastleProvider.PROVIDER_NAME);
-		keyPairGenerator.initialize(4096, new SecureRandom());
+		keyPairGenerator.initialize(keySize, new SecureRandom());
 		KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
 		CertificateData toReturn = new CertificateData();
+		toReturn.setParent(parentCertificate);
+
 		toReturn.setPrivateKey(keyPair.getPrivate());
 		toReturn.setPublicKey(keyPair.getPublic());
 
@@ -70,31 +74,35 @@ final class SimpleCertificateCreator extends CertificateCreator {
 		ExtendedKeyUsage extendedKeyUsage;
 		String algorithm;
 
-		if (isSelfSigned) {
-			issuerName = new X500Name(
-					parentCertificate.getCertificate().getSubjectX500Principal().getName(X500Principal.RFC1779));
-			signerKey = parentCertificate.getPrivateKey();
+		if (isCACertificate) {
 			keyUsage = new KeyUsage(KeyUsage.digitalSignature | KeyUsage.keyCertSign | KeyUsage.cRLSign);
 			extendedKeyUsage = new ExtendedKeyUsage(new KeyPurposeId[] { KeyPurposeId.id_kp_OCSPSigning });
 			algorithm = "SHA512WithRSA";
 		} else {
-			issuerName = new X500Name("cn=" + commonName);
-			signerKey = keyPair.getPrivate();
 			keyUsage = new KeyUsage(KeyUsage.nonRepudiation | KeyUsage.digitalSignature | KeyUsage.keyEncipherment);
 			extendedKeyUsage = new ExtendedKeyUsage(
 					new KeyPurposeId[] { KeyPurposeId.id_kp_clientAuth, KeyPurposeId.id_kp_emailProtection });
 			algorithm = "SHA256WithRSA";
 		}
 
+		if (isSelfSigned) {
+			issuerName = new X500Name("cn=" + commonName);
+			signerKey = keyPair.getPrivate();
+		} else {
+			issuerName = new X500Name(
+					parentCertificate.getCertificate().getSubjectX500Principal().getName(X500Principal.RFC1779));
+			signerKey = parentCertificate.getPrivateKey();
+		}
+
 		SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo.getInstance(keyPair.getPublic().getEncoded());
 
 		X509v3CertificateBuilder certificateBuilder = new X509v3CertificateBuilder(issuerName,
-				new BigInteger(UUID.randomUUID().toString(), 16), notBefore, notAfter, new X500Name("cn=" + commonName),
-				publicKeyInfo);
+				new BigInteger(UUID.randomUUID().toString().replace("-", ""), 16), notBefore, notAfter,
+				new X500Name("cn=" + commonName), publicKeyInfo);
 
 		certificateBuilder.addExtension(Extension.keyUsage, true, keyUsage);
 		certificateBuilder.addExtension(Extension.extendedKeyUsage, false, extendedKeyUsage);
-		if (isSelfSigned)
+		if (isCACertificate)
 			certificateBuilder.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
 
 		ContentSigner signer = new JcaContentSignerBuilder(algorithm).setProvider(BouncyCastleProvider.PROVIDER_NAME)
@@ -113,13 +121,10 @@ final class SimpleCertificateCreator extends CertificateCreator {
 final class ICPCertificateCreator extends CertificateCreator {
 
 	@Override
-	CertificateData build(String commonName, Date notAfter, Date notBefore, CertificateData parent) throws Exception {
+	public CertificateData build(String commonName, Date notAfter, Date notBefore, boolean isCACertificate,
+			CertificateData parent) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-}
-
-enum CertificateType {
-	Simple, ICP
 }
