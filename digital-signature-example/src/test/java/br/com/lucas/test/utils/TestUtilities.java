@@ -27,7 +27,7 @@ public class TestUtilities {
 		if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
 			Security.addProvider(new BouncyCastleProvider());
 		}
-		CertificateCreator certCreator = CertificateCreator.getInstance(CertificateType.Simple);
+		CertificateCreator certCreator = CertificateCreator.getInstance(CertificateType.SIMPLE);
 		String commonName = "Root";
 		initializeDates();
 		toReturn = certCreator.build(commonName, notAfter, notBefore, true, null);
@@ -36,7 +36,7 @@ public class TestUtilities {
 
 	public CertificateData createSimpleIntermediateCertificate() throws Exception {
 		CertificateData parentCertificate = createSimpleSelfSignedTestCertificate();
-		CertificateCreator certCreator = CertificateCreator.getInstance(CertificateType.Simple);
+		CertificateCreator certCreator = CertificateCreator.getInstance(CertificateType.SIMPLE);
 		String commonName = "Intermediate";
 		initializeDates();
 
@@ -45,7 +45,7 @@ public class TestUtilities {
 
 	public CertificateData createSimpleEndUserCertificate() throws Exception {
 		CertificateData parentCertificate = createSimpleIntermediateCertificate();
-		CertificateCreator certCreator = CertificateCreator.getInstance(CertificateType.Simple);
+		CertificateCreator certCreator = CertificateCreator.getInstance(CertificateType.SIMPLE);
 		String commonName = "EndUser";
 		initializeDates();
 

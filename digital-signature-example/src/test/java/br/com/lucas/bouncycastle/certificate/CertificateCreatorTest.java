@@ -9,24 +9,24 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import br.com.lucas.bouncycastle.certificate.model.CertificateData;
 
 class CertificateCreatorTest {
-	private static final Logger logger = LoggerFactory.getLogger(CertificateCreatorTest.class);
+	private static final Logger logger = LogManager.getLogger(CertificateCreatorTest.class);
 
 	@ParameterizedTest
 	@EnumSource(CertificateType.class)
 	void testGetInstance(CertificateType instanceType) {
 		CertificateCreator certCreator = CertificateCreator.getInstance(instanceType);
 		switch (instanceType) {
-		case Simple:
+		case SIMPLE:
 			assertTrue(certCreator instanceof SimpleCertificateCreator);
 			break;
 		case ICP:
@@ -43,7 +43,7 @@ class CertificateCreatorTest {
 			Security.addProvider(new BouncyCastleProvider());
 		}
 		boolean isCACertificate = true;
-		CertificateCreator certCreator = CertificateCreator.getInstance(CertificateType.Simple);
+		CertificateCreator certCreator = CertificateCreator.getInstance(CertificateType.SIMPLE);
 		String commonName = "Tester";
 		LocalDateTime now = LocalDateTime.now();
 		Date notBefore = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());

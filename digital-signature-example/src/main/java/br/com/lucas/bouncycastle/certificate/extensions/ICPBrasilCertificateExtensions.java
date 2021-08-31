@@ -3,11 +3,11 @@ package br.com.lucas.bouncycastle.certificate.extensions;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 
 /**
- * Para mais informações, consulte o DOC-ICP-04 no site do ITI
+ * Para mais informacoes, consulte o DOC-ICP-04 no site do ITI
  * 
  * @author Lucas
  */
-public final class ICPBrasilExtensions {
+public final class ICPBrasilCertificateExtensions {
 	private static final ASN1ObjectIdentifier ICPExtension = new ASN1ObjectIdentifier("2.16.76.1");
 
 	public static final ASN1ObjectIdentifier nascCpfNisRgTitular = ICPExtension.branch("3.1").intern();

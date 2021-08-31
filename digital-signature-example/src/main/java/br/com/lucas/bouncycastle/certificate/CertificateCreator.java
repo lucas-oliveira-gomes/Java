@@ -36,7 +36,7 @@ public abstract class CertificateCreator {
 
 	public static final CertificateCreator getInstance(CertificateType instanceType) {
 		switch (instanceType) {
-		case Simple:
+		case SIMPLE:
 			return new SimpleCertificateCreator();
 		case ICP:
 			return new ICPCertificateCreator();

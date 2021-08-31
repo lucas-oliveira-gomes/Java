@@ -6,14 +6,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import br.com.lucas.test.utils.TestUtilities;
 
 class CertificateDataTest {
-	private static final Logger logger = LoggerFactory.getLogger(CertificateDataTest.class);
+	private static final Logger logger = LogManager.getLogger(CertificateDataTest.class);
 	private static final char[] passwd = "ABC123".toCharArray();
 
 	@Test
