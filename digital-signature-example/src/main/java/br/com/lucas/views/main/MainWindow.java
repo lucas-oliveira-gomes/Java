@@ -49,6 +49,7 @@ import org.apache.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
 import br.com.lucas.bouncycastle.signatures.standards.SignatureStandards;
 import br.com.lucas.bouncycastle.signers.impl.CAdESSigner;
 import br.com.lucas.bouncycastle.signers.impl.PAdESSigner;
+import br.com.lucas.keystore.loaders.impl.MSCAPIKeyStoreLoader;
 import br.com.lucas.keystore.loaders.impl.PKCS12KeyStoreLoader;
 import br.com.lucas.system.configurations.Configurations;
 import br.com.lucas.views.components.CertificateTableModel;
@@ -368,8 +369,25 @@ public class MainWindow extends JFrame {
 	}
 
 	private void loadMsCapiCerts(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		List<TableModelRow> toReturn = new ArrayList<TableModelRow>();
+		MSCAPIKeyStoreLoader keyStoreLoader = new MSCAPIKeyStoreLoader();
+		try {
+			keyStoreLoader.load();
+			List<String> aliases = keyStoreLoader.listKeyAliases();
+			for (String alias : aliases) {
+				X509Certificate cert = keyStoreLoader.getCertificate(alias);
+				TableModelRow row = new TableModelRow();
+				row.setAlias(alias);
+				row.setOwner(cert.getSubjectX500Principal().getName());
+				row.setKeyStoreSource(keyStoreLoader);
+				toReturn.add(row);
+			}			
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Failed to read contents!\nCheck logs for more details",
+					"Failed to read contents", JOptionPane.ERROR_MESSAGE);
+			logger.error("Failed to read contents", ex);
+		}
+		tableModel.addAll(toReturn);
 	}
 
 	private void loadPkcs11Certs(ActionEvent e) {
