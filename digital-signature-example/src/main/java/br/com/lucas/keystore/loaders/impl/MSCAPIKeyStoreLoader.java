@@ -38,7 +38,7 @@ public class MSCAPIKeyStoreLoader implements KeyStoreLoader {
 	@Override
 	public PrivateKey getPrivateKey(String alias)
 			throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {
-		PrivateKey pvtKey = (PrivateKey) internalKeyStore.getKey(null, null);
+		PrivateKey pvtKey = (PrivateKey) internalKeyStore.getKey(alias, null);
 		return pvtKey;
 	}
 
