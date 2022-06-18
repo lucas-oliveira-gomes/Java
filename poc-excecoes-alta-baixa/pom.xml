@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.bradseg</groupId>
+	<artifactId>poc-excecoes-alta-baixa</artifactId>
+	<packaging>pom</packaging>
+	<version>0.0.1</version>
+	<name>poc-excecoes-alta-baixa</name>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.5.RELEASE</version>
+	</parent>
+	<properties>
+		<java.version>1.8</java.version>
+		<maven.compiler.target> 1.8 </maven.compiler.target>
+		<maven.compiler.source> 1.8 </maven.compiler.source>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>	
+	<modules>
+		<module>poc-excecoes-alta-baixa-domain</module>
+		<module>poc-excecoes-alta-baixa-database</module>
+		<module>poc-excecoes-alta-baixa-simulador-alta</module>
+		<module>poc-excecoes-alta-baixa-simulador-baixa</module>
+		<module>poc-excecoes-alta-baixa-dlq-processor</module>
+		<module>poc-excecoes-alta-baixa-pkng-lot-processor</module>
+	</modules>
+</project>

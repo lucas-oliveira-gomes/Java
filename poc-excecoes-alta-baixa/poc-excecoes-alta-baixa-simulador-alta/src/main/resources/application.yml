@@ -1,0 +1,22 @@
+spring:
+   datasource:
+      url: jdbc:postgresql://localhost:5432/postgres
+      username: postgres
+      password: postgres
+   rabbitmq:
+      host: localhost
+      port: 5672
+      username: guest
+      password: guest
+   mq:
+      filas:
+         baixa: poc_baixa_fila
+         dead_letter: poc_baixa_dead_letter
+         parking_lot: poc_baixa_parking_lot
+      exchanges:
+         dead_letter: poc_baixa_exge_dlq
+         default: poc_baixa_exge_default
+         parking_lot: poc_baixa_exge_parking_lot
+      message:
+         size: 2048
+   

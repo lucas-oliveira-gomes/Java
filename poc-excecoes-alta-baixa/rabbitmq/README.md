@@ -1,0 +1,1 @@
+Dados do MQ serão persistidos aqui.
