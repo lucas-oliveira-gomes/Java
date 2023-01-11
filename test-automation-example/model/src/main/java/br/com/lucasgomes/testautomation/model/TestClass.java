@@ -1,0 +1,55 @@
+package br.com.lucasgomes.testautomation.model;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@Entity
+@JsonInclude(Include.NON_NULL)
+public class TestClass implements Serializable {
+
+	private static final long serialVersionUID = -3713415894748182395L;
+
+	@Id
+	private String name;
+	private String description;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TestClass other = (TestClass) obj;
+		return Objects.equals(name, other.name);
+	}
+
+}
