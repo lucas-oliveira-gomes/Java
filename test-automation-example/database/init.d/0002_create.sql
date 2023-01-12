@@ -1,0 +1,11 @@
+create table execution_results (id uuid not null, test_result int4, primary key (id));
+create table screenshot (id uuid not null, content oid, content_type varchar(255), exec_res_id uuid, primary key (id));
+create table test_classes (name varchar(255) not null, description varchar(255), primary key (name));
+create table test_test_classes (test_id uuid not null, test_class_id varchar(255) not null, primary key (test_id, test_class_id));
+create table test_assertion (id uuid not null, assertion varchar(255), result boolean, exec_res_id uuid, primary key (id));
+create table tests (id uuid not null, creation_time timestamp, test_execution_step int4, execution_results_id uuid, primary key (id));
+alter table if exists screenshot add constraint FK5ws4h8i9wqqyi3lks0qkp560t foreign key (exec_res_id) references execution_results;
+alter table if exists test_test_classes add constraint FK6o4vgb8ui6w7kqaen6v2ef06h foreign key (test_class_id) references test_classes;
+alter table if exists test_test_classes add constraint FKo3xjt9638j9v2y61t3j3jkdwp foreign key (test_id) references tests;
+alter table if exists test_assertion add constraint FK7n98rsewu946lovn3sqe2la1g foreign key (exec_res_id) references execution_results;
+alter table if exists tests add constraint FKs13545r10ilpwmdrjmt336vm7 foreign key (execution_results_id) references execution_results;

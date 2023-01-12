@@ -13,13 +13,11 @@
 			<groupId>br.com.lucas</groupId>
 			<artifactId>model</artifactId>
 			<version>0.0.1</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.com.lucas</groupId>
 			<artifactId>repository</artifactId>
 			<version>0.0.1</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -38,5 +36,18 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>

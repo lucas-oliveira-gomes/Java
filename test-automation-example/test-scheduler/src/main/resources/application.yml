@@ -1,0 +1,28 @@
+spring:
+   datasource:
+      url: jdbc:postgresql://localhost:5432/postgres
+      username: postgres
+      password: postgres
+   jpa:
+      properties:
+         javax:
+            persistence:
+               schema-generation:
+                  scripts:
+                     action: none
+                     create-target: create.sql
+                     create-source: metadata
+                     drop-target: drop.sql
+                     drop-source: metadata
+   rabbitmq:
+      host: localhost
+      port: 5672
+      username: guest
+      password: guest
+   mq:
+      queue:
+         runner: test_runner_runner_q
+         dlq: test_runner_dlq_q
+      exchange:
+         dlq: test_runner_dlq_exg
+         default: test_runner_default_exg

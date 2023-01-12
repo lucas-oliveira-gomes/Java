@@ -1,0 +1,11 @@
+alter table if exists screenshot drop constraint if exists FK5ws4h8i9wqqyi3lks0qkp560t;
+alter table if exists test_test_classes drop constraint if exists FK6o4vgb8ui6w7kqaen6v2ef06h;
+alter table if exists test_test_classes drop constraint if exists FKo3xjt9638j9v2y61t3j3jkdwp;
+alter table if exists test_assertion drop constraint if exists FK7n98rsewu946lovn3sqe2la1g;
+alter table if exists tests drop constraint if exists FKs13545r10ilpwmdrjmt336vm7;
+drop table if exists execution_results cascade;
+drop table if exists screenshot cascade;
+drop table if exists test_classes cascade;
+drop table if exists test_test_classes cascade;
+drop table if exists test_assertion cascade;
+drop table if exists tests cascade;
